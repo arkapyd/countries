@@ -100,10 +100,12 @@ window.DASHBOARD_DATA = {
         { term: "rabi", full: "Winter cropping season", note: "Crops sown around October–December and harvested in spring (e.g. wheat)." }
       ],
 
-      crops: {
-        heading: "Crop statistics",
-        sub: "Production · import · export — hover any crop row for its major producing states; click any row, card or badge to open its source",
-        tabs: [
+      windows: [
+        {
+          id: "crops",
+          heading: "Crop statistics",
+          sub: "Production · import · export — hover any crop row for its major producing states; click any row, card or badge to open its source",
+          tabs: [
 
           /* ---------------- PRODUCTION ---------------- */
           {
@@ -319,6 +321,56 @@ window.DASHBOARD_DATA = {
           }
         ]
       },
+         {
+          id: "state_initiatives",
+          heading: "State initiatives",
+          sub: "Capacity building · programmes",
+          tabs: [
+            {
+              id: "capacity_building",
+              label: "Capacity building",
+              blocks: [
+                {
+                  type: "card",
+                  title: "Farm-level capacity building",
+                  text: "NMSA and NICRA build capacity at the farm well[cite: 2]. The National Mission for Sustainable Agriculture (NMSA) is the umbrella mission for climate-adaptive farming practices[cite: 2]. NICRA (National Innovations in Climate Resilient Agriculture) is an ICAR research network developing stress-tolerant varieties and practices[cite: 2]."
+                }
+              ]
+            },
+            {
+              id: "programmes",
+              label: "Programmes",
+              blocks: [
+                {
+                  type: "chart",
+                  title: "National Adaptation Fund for Climate Change (NAFCC)",
+                  unit: "count",
+                  bars: [
+                    { label: "Projects", value: 30, display: "30" },
+                    { label: "States & UTs", value: 27, display: "27" }
+                  ],
+                  footnote: "The NAFCC funded 30 projects worth $88 M across 27 States and UTs[cite: 2]. It was downgraded from a 'scheme' to a 'non-scheme' in November 2022[cite: 2]."
+                },
+                {
+                  type: "chart",
+                  title: "Organic value chain push",
+                  unit: "lakh farmers",
+                  bars: [
+                    { label: "PKVY (nationwide)", value: 25.30, display: "25.30" },
+                    { label: "MOVCDNER (North-East)", value: 2.19, display: "2.19" }
+                  ],
+                  footnote: "PKVY covers 52,289 clusters with $225 M released to Dec 2024, aiming to pitch India as an established exporter of organic produce[cite: 2]. MOVCDNER operates 434 Farmer Producer Companies specific to the North-East[cite: 2]."
+                },
+                {
+                  type: "card",
+                  title: "State-level development & agroforestry",
+                  text: "The Rashtriya Krishi Vikas Yojana (RKVY) funds state-level projects[cite: 2]. It includes the Sub-Mission on Agroforestry (SMAF), which has a $28 M indicative outlay (2021–26) promoting trees on farmland under the 'Har Medh Par Pedh' push[cite: 2]."
+                }
+              ]
+            }
+          ]
+        }
+      ],
 
       insights: [
         {
