@@ -77,14 +77,41 @@
   .panel-head h3{font-family:var(--font-display);font-size:19px;font-weight:700;margin:0;}
   .panel-sub{font-size:12.5px;color:var(--ink-soft);margin:0;}
 
-  .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
-  .chart-slot{background:var(--eggshell-raised);border:1.5px dashed var(--line-strong);border-radius:var(--radius);min-height:210px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;transition:var(--pop);}
-  .chart-slot:hover{background:var(--cream-orange);border-style:solid;border-color:var(--ink);transform:scale(1.03);box-shadow:4px 4px 0 var(--ink);}
-  .chart-slot:hover .chart-slot-tag,.chart-slot:hover .chart-slot-title,.chart-slot:hover .chart-slot-hint{color:#000;}
-  .chart-slot:hover .chart-slot-tag,.chart-slot:hover .chart-slot-hint{font-weight:700;}
-  .chart-slot-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--cream-orange-hot);margin:0 0 auto;transition:color .16s,font-weight .16s;}
-  .chart-slot-title{font-family:var(--font-display);font-size:16px;font-weight:700;margin:0 0 5px;transition:color .16s;}
-  .chart-slot-hint{font-size:12px;color:var(--ink-soft);margin:0;line-height:1.4;transition:color .16s,font-weight .16s;}
+  /* ---------- crop tabs ---------- */
+  .tab-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .tab-btn{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;border:1.5px solid var(--line-strong);background:var(--eggshell-raised);color:var(--ink-soft);border-radius:var(--radius);cursor:pointer;transition:var(--pop);}
+  .tab-btn:hover{background:var(--cream-orange);color:#000;font-weight:700;border-color:var(--ink);transform:scale(1.06);}
+  .tab-btn.active{background:var(--cream-orange);color:#000;font-weight:700;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
+  .tab-note{font-size:12.5px;line-height:1.5;color:var(--ink-soft);border:1.5px dashed var(--line-strong);border-radius:var(--radius);background:var(--eggshell-raised);padding:10px 14px;margin:0 0 16px;}
+  .tab-note strong{color:var(--burnt);}
+
+  .chart-card{background:var(--eggshell-raised);border:1.5px solid var(--line-strong);border-radius:var(--radius);padding:16px 18px 12px;margin-bottom:16px;transition:var(--pop);}
+  .chart-card:hover{border-color:var(--ink);box-shadow:4px 4px 0 var(--ink);}
+  .chart-title{font-family:var(--font-display);font-size:16px;font-weight:700;margin:0 0 2px;}
+  .chart-unit{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--burnt);margin:0 0 10px;}
+  .chart-svg{width:100%;height:auto;display:block;}
+  .chart-foot{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:8px 0 2px;border-top:1px solid var(--line);padding-top:8px;}
+
+  .bar-row .bar{fill:var(--cream-orange);stroke:var(--ink);stroke-width:1.5;transition:fill .16s ease;}
+  .bar-row .bar-label{font-family:var(--font-mono);font-size:11px;fill:var(--ink);transition:font-weight .16s,fill .16s;}
+  .bar-row .bar-value{font-family:var(--font-mono);font-size:11.5px;font-weight:600;fill:var(--burnt);transition:font-weight .16s,fill .16s;}
+  .bar-row:hover .bar{fill:var(--cream-orange-hot);}
+  .bar-row:hover .bar-label,.bar-row:hover .bar-value{fill:#000;font-weight:700;}
+
+  .badge-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:4px 0 10px;}
+  .badge-wrap{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:6px;}
+  .rank-badge{font-family:var(--font-mono);font-size:11px;border:2px solid var(--cream-orange-hot);background:var(--eggshell-raised);color:var(--ink);border-radius:2px;padding:5px 9px;transform:rotate(-1.2deg);transition:var(--pop);cursor:default;}
+  .rank-badge:nth-child(even){transform:rotate(1.2deg);}
+  .rank-badge b{color:var(--burnt);font-weight:600;}
+  .rank-badge:hover{background:var(--cream-orange);border-color:var(--ink);color:#000;font-weight:700;transform:scale(1.08) rotate(0deg);box-shadow:3px 3px 0 var(--ink);}
+  .rank-badge:hover b{color:#000;font-weight:700;}
+
+  .trade-card{background:var(--eggshell-raised);border:1.5px solid var(--line-strong);border-left:4px solid var(--cream-orange-hot);border-radius:var(--radius);padding:14px 17px;margin-bottom:12px;transition:var(--pop);}
+  .trade-card:hover{background:var(--cream-orange);border-color:var(--ink);border-left-color:var(--ink);transform:scale(1.02);box-shadow:4px 4px 0 var(--ink);}
+  .trade-card:hover h4,.trade-card:hover p{color:#000;}
+  .trade-card:hover p{font-weight:700;}
+  .trade-card h4{font-family:var(--font-display);font-size:15.5px;font-weight:700;margin:0 0 6px;transition:color .16s;}
+  .trade-card p{font-size:13px;line-height:1.55;margin:0;color:var(--ink);transition:color .16s,font-weight .16s;}
 
   /* insights rail */
   .rail-head{border-bottom:2px solid var(--ink);padding-bottom:7px;margin-bottom:14px;}
@@ -155,10 +182,11 @@
 
         <section class="panel">
           <div class="panel-head">
-            <h3>Charts</h3>
-            <p class="panel-sub">Reserved slots — wired up once the visualisation approach is settled</p>
+            <h3 id="cropsHeading">Crop statistics</h3>
+            <p class="panel-sub" id="cropsSub"></p>
           </div>
-          <div class="chart-grid" id="chartGrid"></div>
+          <div class="tab-row" id="tabRow" role="tablist" aria-label="Crop statistics tabs"></div>
+          <div id="tabPanel" role="tabpanel"></div>
         </section>
       </div>
 
@@ -188,6 +216,7 @@
   var meta = D.meta || {};
   var countries = D.countries;
   var activeCode = countries[0].code;
+  var activeTabId = null;
 
   var $ = function (id) { return document.getElementById(id); };
   var el = function (tag, cls, html) {
@@ -198,7 +227,8 @@
   };
   var esc = function (s) {
     return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   };
 
   /* ---------- gentle click sound (WebAudio, no files) ---------- */
@@ -223,9 +253,8 @@
       osc.stop(t + 0.1);
     } catch (e) { /* audio unavailable — stay silent */ }
   }
-  // any click on an interactive or hoverable card gives a soft tick
   document.addEventListener("click", function (e) {
-    if (e.target.closest(".country-row, .kpi-card, .insight-card, .chart-slot, .sound-toggle")) tick();
+    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .sound-toggle")) tick();
   });
   $("soundToggle").addEventListener("click", function () {
     soundOn = !soundOn;
@@ -240,6 +269,37 @@
   $("lastUpdated").textContent = meta.lastUpdated ? "Updated " + meta.lastUpdated : "";
   $("conversionChip").textContent = meta.conversionNote || "";
   if (!meta.conversionNote) $("conversionChip").style.display = "none";
+
+  /* ---------- SVG bar chart builder ---------- */
+  var CH = { w: 640, labelW: 172, barX: 180, maxBarW: 380, rowH: 34, barH: 20, padTop: 4 };
+  function buildBarChart(chart) {
+    var bars = chart.bars || [];
+    var max = chart.max || Math.max.apply(null, bars.map(function (b) { return b.value; })) || 1;
+    var h = CH.padTop + bars.length * CH.rowH;
+    var svg = '<svg class="chart-svg" viewBox="0 0 ' + CH.w + ' ' + h + '" role="img" aria-label="' +
+      esc(chart.title) + '">';
+    bars.forEach(function (b, i) {
+      var y = CH.padTop + i * CH.rowH;
+      var w = Math.max(3, Math.round((b.value / max) * CH.maxBarW));
+      var cy = y + CH.barH / 2 + 4;
+      svg += '<g class="bar-row">' +
+        '<text class="bar-label" x="' + (CH.barX - 10) + '" y="' + cy + '" text-anchor="end">' + esc(b.label) + '</text>' +
+        '<rect class="bar" data-w="' + w + '" x="' + CH.barX + '" y="' + (y + 3) + '" width="0" height="' + CH.barH + '" rx="2"></rect>' +
+        '<text class="bar-value" x="' + (CH.barX + w + 9) + '" y="' + cy + '">' + esc(b.display != null ? b.display : b.value) + '</text>' +
+        '</g>';
+    });
+    svg += '</svg>';
+    return svg;
+  }
+  function growBars(container) {
+    var rects = container.querySelectorAll("rect.bar");
+    requestAnimationFrame(function () {
+      rects.forEach(function (r) {
+        r.style.transition = "width .55s cubic-bezier(.25,1,.4,1)";
+        requestAnimationFrame(function () { r.style.width = r.getAttribute("data-w") + "px"; });
+      });
+    });
+  }
 
   /* ---------- renderers ---------- */
   function renderSidebar() {
@@ -270,20 +330,63 @@
     });
   }
 
-  function renderChartSlots(c) {
-    var grid = $("chartGrid");
-    grid.innerHTML = "";
-    var slots = (c.chartSlots && c.chartSlots.length)
-      ? c.chartSlots
-      : [{ title: "Chart — to be defined", hint: "" }];
-    slots.forEach(function (s) {
-      var slot = el("div", "chart-slot");
-      slot.innerHTML =
-        '<p class="chart-slot-tag">Chart slot</p>' +
-        '<p class="chart-slot-title">' + esc(s.title) + '</p>' +
-        (s.hint ? '<p class="chart-slot-hint">' + esc(s.hint) + '</p>' : '');
-      grid.appendChild(slot);
+  function renderTabs(c) {
+    var crops = c.crops || { tabs: [] };
+    $("cropsHeading").textContent = crops.heading || "Crop statistics";
+    $("cropsSub").textContent = crops.sub || "";
+    var row = $("tabRow");
+    row.innerHTML = "";
+    var tabs = crops.tabs || [];
+    if (!tabs.length) {
+      $("tabPanel").innerHTML = '<p class="tab-note">No crop statistics recorded for this country yet.</p>';
+      return;
+    }
+    if (!activeTabId || !tabs.some(function (t) { return t.id === activeTabId; })) {
+      activeTabId = tabs[0].id;
+    }
+    tabs.forEach(function (t) {
+      var b = el("button", "tab-btn" + (t.id === activeTabId ? " active" : ""), esc(t.label));
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-selected", t.id === activeTabId ? "true" : "false");
+      b.addEventListener("click", function () {
+        activeTabId = t.id;
+        renderTabs(c);
+      });
+      row.appendChild(b);
     });
+    renderTabPanel(tabs.filter(function (t) { return t.id === activeTabId; })[0]);
+  }
+
+  function renderTabPanel(tab) {
+    var panel = $("tabPanel");
+    panel.innerHTML = "";
+    if (!tab) return;
+
+    if (tab.note) {
+      panel.appendChild(el("p", "tab-note", esc(tab.note)));
+    }
+    (tab.cards || []).forEach(function (card) {
+      panel.appendChild(el("div", "trade-card",
+        '<h4>' + esc(card.title) + '</h4><p>' + esc(card.text) + '</p>'));
+    });
+    (tab.charts || []).forEach(function (chart) {
+      var cardHtml =
+        '<p class="chart-title">' + esc(chart.title) + '</p>' +
+        (chart.unit ? '<p class="chart-unit">' + esc(chart.unit) + '</p>' : '') +
+        buildBarChart(chart) +
+        (chart.footnote ? '<p class="chart-foot">' + esc(chart.footnote) + '</p>' : '');
+      panel.appendChild(el("div", "chart-card", cardHtml));
+    });
+    if (tab.badges && tab.badges.length) {
+      if (tab.badgesTitle) panel.appendChild(el("p", "badge-title", esc(tab.badgesTitle)));
+      var wrap = el("div", "badge-wrap");
+      tab.badges.forEach(function (bd) {
+        wrap.appendChild(el("span", "rank-badge",
+          esc(bd.label) + ' — <b>' + esc(bd.detail) + '</b>'));
+      });
+      panel.appendChild(wrap);
+    }
+    growBars(panel);
   }
 
   function renderInsights(c) {
@@ -302,13 +405,14 @@
     var c = countries.filter(function (x) { return x.code === code; })[0];
     if (!c) return;
     activeCode = code;
+    activeTabId = null; // reset to first tab for the new country
     $("activeRegion").textContent = c.region || "";
     $("activeName").textContent = c.name || "";
     $("activeSub").textContent = c.subtitle || "";
     $("thesis").textContent = c.thesis || "";
     renderSidebar();
     renderKpis(c);
-    renderChartSlots(c);
+    renderTabs(c);
     renderInsights(c);
   }
 
