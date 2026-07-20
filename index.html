@@ -91,7 +91,9 @@
   .chart-unit{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--burnt);margin:0 0 10px;}
   .chart-svg{width:100%;height:auto;display:block;}
   .chart-foot{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:8px 0 2px;border-top:1px solid var(--line);padding-top:8px;}
+  .chart-source{font-family:var(--font-mono);font-size:10px;color:var(--burnt);margin-bottom:4px;display:block;}
 
+  .bar-row { cursor: pointer; } /* Added clickable pointer */
   .bar-row .bar{fill:var(--cream-orange);stroke:var(--ink);stroke-width:1.5;transition:fill .16s ease;}
   .bar-row .bar-label{font-family:var(--font-mono);font-size:11px;fill:var(--ink);transition:font-weight .16s,fill .16s;}
   .bar-row .bar-value{font-family:var(--font-mono);font-size:11.5px;font-weight:600;fill:var(--burnt);transition:font-weight .16s,fill .16s;}
@@ -203,8 +205,105 @@
 
 </div>
 
-<script src="data.js"></script>
 <script>
+// Generating the embedded payload based on the provided document[cite: 1]
+window.DASHBOARD_DATA = {
+  meta: {
+    title: "Agriculture & Climate Resilience Dashboard[cite: 1]",
+    fileLabel: "Research Report",
+    lastUpdated: "2026-27",
+    conversionNote: "Values based on latest 2024-25 estimates[cite: 1]"
+  },
+  countries: [
+    {
+      code: "IN",
+      name: "India",
+      region: "South Asia",
+      subtitle: "Context, Policy, and Challenges",
+      thesis: "India’s stance on climate action in agriculture is adaptation-first, with mitigation arriving as a by-outcome of adaptive practice.[cite: 1]",
+      kpis: [
+        { label: "Agriculture Workforce", value: "46%+", note: "of national workforce[cite: 1]" },
+        { label: "GVA Contribution", value: "18.4%", note: "at current prices (2022-23)[cite: 1]" },
+        { label: "Rain-fed Sown Area", value: "55%", note: "supporting 61% of farmers[cite: 1]" },
+        { label: "Foodgrain Production", value: "357.7m", note: "tonnes in 2024-25[cite: 1]" }
+      ],
+      crops: {
+        heading: "Production & Investment Statistics",
+        sub: "Data on leading yields and agricultural budget composition[cite: 1]",
+        tabs: [
+          {
+            id: "production",
+            label: "Production",
+            charts: [
+              {
+                title: "Key Crop Production (2024-25)",
+                unit: "Million Tonnes",
+                source: "National Food Security Mission (NFSM) / ICAR",
+                bars: [
+                  { label: "Rice", value: 150.18, url: "https://nfsm.gov.in" },
+                  { label: "Wheat", value: 117.94, url: "https://nfsm.gov.in" },
+                  { label: "Pulses", value: 25.68, url: "https://nfsm.gov.in" },
+                  { label: "Millets", value: 18.59, url: "https://nfsm.gov.in" }
+                ]
+              },
+              {
+                title: "Agriculture Budget Allocation (2026-27)",
+                unit: "₹ Crore",
+                source: "Demand for Grants Analysis, PRS Legislative Research",
+                bars: [
+                  { label: "PM-KISAN", value: 63500, url: "https://prsindia.org" },
+                  { label: "Credit Subvention", value: 22600, url: "https://prsindia.org" },
+                  { label: "Crop Insurance", value: 12200, url: "https://prsindia.org" },
+                  { label: "RKVY", value: 8550, url: "https://prsindia.org" }
+                ]
+              }
+            ],
+            badgesTitle: "Global Agricultural Ranks",
+            badges: [
+              { label: "Millets", detail: "1st globally[cite: 1]" },
+              { label: "Rice", detail: "1st globally[cite: 1]" },
+              { label: "Wheat", detail: "2nd globally[cite: 1]" },
+              { label: "Pulses", detail: "1st globally[cite: 1]" }
+            ]
+          },
+          {
+            id: "resilience",
+            label: "Climate Interventions",
+            cards: [
+              {
+                title: "Micro-irrigation Expansion",
+                text: "109 lakh hectares brought under micro-irrigation since 2015-16, with ₹21,968.75 crore released to Dec 2024.[cite: 1]"
+              },
+              {
+                title: "Soil Health Cards",
+                text: "Over 24.60 crore cards issued since 2015 assessing twelve key soil parameters to boost sustainable land management.[cite: 1]"
+              },
+              {
+                title: "Organic & Natural Farming",
+                text: "PKVY and MOVCDNER have mobilised roughly 16.7 lakh hectares across 27.5 lakh farmers to establish robust organic value chains.[cite: 1]"
+              }
+            ]
+          }
+        ]
+      },
+      insights: [
+        {
+          title: "Vulnerability Exposure",
+          text: "Over 80% of India’s population lives in districts highly vulnerable to hydro-meteorological disasters such as floods, droughts, and cyclones.[cite: 1]"
+        },
+        {
+          title: "Adaptation Focus",
+          text: "Mandating sustainable practice shifts on smallholders without providing financial insulation is contrary to equity principles; hence the adaptation-first stance.[cite: 1]"
+        },
+        {
+          title: "Infrastructure Gap",
+          text: "While resilience is promoted on the farm via water and soil initiatives, wider supply chain processing, packaging, and transport lag behind.[cite: 1]"
+        }
+      ]
+    }
+  ]
+};
+
 (function () {
   var D = window.DASHBOARD_DATA;
   if (!D || !D.countries || !D.countries.length) {
@@ -254,7 +353,7 @@
     } catch (e) { /* audio unavailable — stay silent */ }
   }
   document.addEventListener("click", function (e) {
-    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .sound-toggle")) tick();
+    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .sound-toggle, .bar-row")) tick();
   });
   $("soundToggle").addEventListener("click", function () {
     soundOn = !soundOn;
@@ -278,11 +377,16 @@
     var h = CH.padTop + bars.length * CH.rowH;
     var svg = '<svg class="chart-svg" viewBox="0 0 ' + CH.w + ' ' + h + '" role="img" aria-label="' +
       esc(chart.title) + '">';
+    
     bars.forEach(function (b, i) {
       var y = CH.padTop + i * CH.rowH;
       var w = Math.max(3, Math.round((b.value / max) * CH.maxBarW));
       var cy = y + CH.barH / 2 + 4;
-      svg += '<g class="bar-row">' +
+      
+      // Inject url redirection for clickable bars
+      var clickAction = b.url ? ' onclick="window.open(\'' + esc(b.url) + '\', \'_blank\')"' : '';
+
+      svg += '<g class="bar-row"' + clickAction + '>' +
         '<text class="bar-label" x="' + (CH.barX - 10) + '" y="' + cy + '" text-anchor="end">' + esc(b.label) + '</text>' +
         '<rect class="bar" data-w="' + w + '" x="' + CH.barX + '" y="' + (y + 3) + '" width="0" height="' + CH.barH + '" rx="2"></rect>' +
         '<text class="bar-value" x="' + (CH.barX + w + 9) + '" y="' + cy + '">' + esc(b.display != null ? b.display : b.value) + '</text>' +
@@ -374,6 +478,8 @@
         '<p class="chart-title">' + esc(chart.title) + '</p>' +
         (chart.unit ? '<p class="chart-unit">' + esc(chart.unit) + '</p>' : '') +
         buildBarChart(chart) +
+        // Added rendering for the chart source footnote
+        (chart.source ? '<p class="chart-foot"><span class="chart-source">Source: ' + esc(chart.source) + '[cite: 1]</span></p>' : '') +
         (chart.footnote ? '<p class="chart-foot">' + esc(chart.footnote) + '</p>' : '');
       panel.appendChild(el("div", "chart-card", cardHtml));
     });
