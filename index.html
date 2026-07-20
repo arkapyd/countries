@@ -95,9 +95,9 @@
   /* HTML bar rows */
   .bars{display:flex;flex-direction:column;gap:3px;}
   .crop-row{border-radius:var(--radius);}
-  .crop-bar-line{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:12px;padding:6px 6px;border-radius:var(--radius);text-decoration:none;color:inherit;border:1.5px solid transparent;}
+  .crop-bar-line{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:12px;padding:6px 6px;border-radius:var(--radius);text-decoration:none;color:inherit;}
   a.crop-bar-line{cursor:pointer;}
-  a.crop-bar-line:hover{background:var(--cream-orange);border-color:var(--ink);}
+  a.crop-bar-line:hover{background:var(--cream-orange);}
   .crop-bar-label{font-family:var(--font-mono);font-size:12px;text-align:right;color:var(--ink);line-height:1.25;transition:color .16s,font-weight .16s;}
   a.crop-bar-line:hover .crop-bar-label{color:#000;font-weight:700;}
   .crop-bar-track{height:22px;background:#EFE9D8;border:1.5px solid var(--ink);border-radius:3px;overflow:hidden;}
@@ -160,6 +160,34 @@
     .crop-states{padding-left:122px;}
   }
   @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
+
+  /* themed scrollbars */
+  html{scrollbar-color:var(--cream-orange-hot) var(--eggshell);scrollbar-width:thin;}
+  *{scrollbar-color:var(--cream-orange-hot) var(--eggshell-raised);scrollbar-width:thin;}
+  ::-webkit-scrollbar{width:12px;height:12px;}
+  ::-webkit-scrollbar-track{background:var(--eggshell);border-left:1.5px solid var(--line);}
+  ::-webkit-scrollbar-thumb{background:var(--cream-orange);border:2px solid var(--eggshell);border-radius:8px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--cream-orange-hot);}
+  ::-webkit-scrollbar-corner{background:var(--eggshell);}
+  .country-index::-webkit-scrollbar{width:9px;}
+  .country-index::-webkit-scrollbar-track{background:var(--eggshell-raised);border:none;}
+
+  /* glossary */
+  .glossary-btn{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--burnt);border:1.5px solid var(--cream-orange-hot);background:var(--eggshell-raised);border-radius:999px;padding:5px 14px;cursor:pointer;transition:var(--pop);}
+  .glossary-btn:hover{background:var(--cream-orange);color:#000;font-weight:700;border-color:var(--ink);transform:scale(1.05);}
+  .glossary-btn.active{background:var(--cream-orange);color:#000;font-weight:700;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);}
+  .glossary-panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s ease,opacity .35s ease,margin .35s ease;margin:0;}
+  .glossary-panel.open{max-height:2600px;opacity:1;margin:0 0 26px;}
+  .glossary-inner{border:2px solid var(--ink);border-radius:var(--radius);background:var(--eggshell-raised);padding:16px 18px;box-shadow:4px 4px 0 var(--ink);}
+  .glossary-inner h3{font-family:var(--font-display);font-size:17px;font-weight:700;margin:0 0 3px;}
+  .glossary-inner .gloss-sub{font-size:12px;color:var(--ink-soft);margin:0 0 14px;}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+  .gloss-item{border-left:3px solid var(--cream-orange-hot);background:var(--eggshell);border-radius:0 var(--radius) var(--radius) 0;padding:9px 12px;transition:background .16s ease,transform .16s ease;}
+  .gloss-item:hover{background:var(--cream-orange);transform:translateX(2px);}
+  .gloss-item:hover .gloss-full,.gloss-item:hover .gloss-note{color:#000;}
+  .gloss-term{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--ink);}
+  .gloss-full{font-family:var(--font-display);font-size:13.5px;font-weight:600;color:var(--ink);margin-left:6px;}
+  .gloss-note{font-size:12px;line-height:1.45;color:var(--ink-soft);margin:4px 0 0;}
 </style>
 </head>
 <body>
@@ -187,8 +215,19 @@
         <h2 class="topbar-title" id="activeName"></h2>
         <p class="topbar-sub" id="activeSub"></p>
       </div>
-      <span class="conversion-chip" id="conversionChip"></span>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <button class="glossary-btn" id="glossaryBtn" type="button" aria-expanded="false">Glossary</button>
+        <span class="conversion-chip" id="conversionChip"></span>
+      </div>
     </header>
+
+    <div class="glossary-panel" id="glossaryPanel">
+      <div class="glossary-inner">
+        <h3 id="glossaryTitle">Glossary</h3>
+        <p class="gloss-sub" id="glossarySub"></p>
+        <div class="glossary-grid" id="glossaryGrid"></div>
+      </div>
+    </div>
 
     <div class="body-grid">
       <div class="body-left">
@@ -264,7 +303,7 @@
     } catch (e) {}
   }
   document.addEventListener("click", function (e) {
-    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .crop-bar-line, .crop-states a, .chart-src a, .sound-toggle")) tick();
+    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .crop-bar-line, .crop-states a, .chart-src a, .sound-toggle, .glossary-btn, .gloss-item")) tick();
   });
   $("soundToggle").addEventListener("click", function () {
     soundOn = !soundOn;
@@ -445,6 +484,28 @@
     });
   }
 
+  function renderGlossary(c) {
+    var btn = $("glossaryBtn"), panel = $("glossaryPanel"), grid = $("glossaryGrid");
+    var items = c.glossary || [];
+    if (!items.length) { btn.style.display = "none"; panel.classList.remove("open"); return; }
+    btn.style.display = "";
+    $("glossaryTitle").textContent = "Glossary — " + (c.name || "");
+    $("glossarySub").textContent = "Full forms and a one-line note for every abbreviation used on this page.";
+    grid.innerHTML = "";
+    items.slice().sort(function (a, b) { return a.term.localeCompare(b.term); }).forEach(function (g) {
+      grid.appendChild(el("div", "gloss-item",
+        '<span class="gloss-term">' + esc(g.term) + '</span>' +
+        '<span class="gloss-full">' + esc(g.full) + '</span>' +
+        '<p class="gloss-note">' + esc(g.note) + '</p>'));
+    });
+  }
+  $("glossaryBtn").addEventListener("click", function () {
+    var panel = $("glossaryPanel");
+    var open = panel.classList.toggle("open");
+    this.classList.toggle("active", open);
+    this.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
   function setActive(code) {
     var c = countries.filter(function (x) { return x.code === code; })[0];
     if (!c) return;
@@ -458,6 +519,7 @@
     renderKpis(c);
     renderTabs(c);
     renderInsights(c);
+    renderGlossary(c);
   }
 
   setActive(activeCode);
