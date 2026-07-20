@@ -1,23 +1,24 @@
 /* =============================================================
    RESEARCH DASHBOARD — BASELINE DATA
    -------------------------------------------------------------
-   This is the only file you edit to add or change content.
+   The only file you edit to add or change content.
    index.html reads window.DASHBOARD_DATA and renders everything.
 
-   To add a country: copy the COUNTRY TEMPLATE block at the bottom,
-   fill it in, and drop it into the `countries` array. That's it —
-   the sidebar, KPI strip, chart slots and insights all populate
-   automatically.
+   MONEY: all monetary figures are in USD million, converted from
+   the source's ₹ figures at ₹87 = US$1 (stated in the footer).
+   Change the rate note in meta.conversionNote if you re-base.
 
-   Field notes:
-   - code       3-letter code shown as the stamp badge in the sidebar
-   - subtitle   one line under the country name in the header
-   - thesis     the core argument, shown as the lead paragraph
-   - kpis       headline numbers. value is a string so units/₹/%
-                stay exactly as you want them; note is the small print
-   - chartSlots labels for the (currently empty) chart placeholders —
-                these describe what we intend to visualise there
-   - insights   titled takeaways pulled from the research
+   To add a country: copy the COUNTRY TEMPLATE at the bottom,
+   fill it in, and drop it into the `countries` array.
+
+   Fields:
+   - code       3-letter code shown as the stamp badge
+   - subtitle   one line under the country name
+   - thesis     core argument, shown as the lead paragraph
+   - kpis       headline numbers; value is a string so units stay
+                exactly as written; note is the small print
+   - chartSlots labels for the reserved chart placeholders
+   - insights   titled takeaways from the research
    ============================================================= */
 
 window.DASHBOARD_DATA = {
@@ -25,7 +26,8 @@ window.DASHBOARD_DATA = {
     title: "Country dashboard",
     fileLabel: "Research file",
     lastUpdated: "2026-07-20",
-    baselineNote: "Baseline: Sustainable agriculture in India"
+    baselineNote: "Baseline: Sustainable agriculture in India",
+    conversionNote: "Monetary figures in USD million, at ₹87 = US$1"
   },
 
   countries: [
@@ -43,20 +45,21 @@ window.DASHBOARD_DATA = {
         { label: "Primary dependence on farming", value: "~20%", note: "of households (PRICE 2025)" },
         { label: "Net sown area rain-fed", value: "55%", note: "≈139.4 m ha, as of 2022" },
         { label: "Population in high-risk districts", value: "80%+", note: "hydro-met hazards (CEEW 2021)" },
-        { label: "Ministry budget, 2026–27", value: "₹1.4 lakh cr", note: "Budget Estimate" },
-        { label: "PM-KISAN allocation", value: "₹63,500 cr", note: "≈45% of ministry budget" },
-        { label: "Foodgrain output, 2024–25", value: "357.7 mt", note: "record; rice 150.2, wheat 117.9" },
-        { label: "Micro-irrigation coverage", value: "~109 lakh ha", note: "still under 8% of net sown area" }
+        { label: "Ministry budget, 2026–27", value: "$16,150 M", note: "Budget Estimate (₹1.41 lakh cr)" },
+        { label: "PM-KISAN allocation", value: "$7,300 M", note: "≈45% of ministry budget" },
+        { label: "Crop-insurance claims paid", value: "$21,030 M", note: "PMFBY, since 2016" },
+        { label: "Micro-irrigation spend", value: "$3,026 M", note: "~109 lakh ha since 2015–16" },
+        { label: "Foodgrain output, 2024–25", value: "357.7 mt", note: "record; rice 150.2, wheat 117.9" }
       ],
 
       chartSlots: [
         {
           title: "Budget composition, 2026–27",
-          hint: "income support · insurance · interest subvention vs the rest (₹ crore)"
+          hint: "income support · insurance · interest subvention vs the rest (USD M)"
         },
         {
           title: "Programme coverage vs cost",
-          hint: "the schemes in Table 1 — scale against spend"
+          hint: "the schemes in Table 1 — scale against spend (USD M)"
         },
         {
           title: "Vulnerability & water",
@@ -71,7 +74,7 @@ window.DASHBOARD_DATA = {
         },
         {
           title: "The money leans to transfers",
-          text: "Income support, crop insurance and interest subvention together take roughly three-quarters of the department's budget. The resilient capital climate-proofing needs — water structures, storage, cold chains, processing — sits in far smaller lines, or off-budget in the AIF and the Micro Irrigation Fund."
+          text: "Income support ($7,300 M), crop insurance ($1,400 M) and interest subvention ($2,600 M) together take roughly three-quarters of the department's budget. The resilient capital climate-proofing needs — water structures, storage, cold chains, processing — sits in far smaller lines, or off-budget in the $11,490 M AIF and the $575 M Micro Irrigation Fund."
         },
         {
           title: "The farm is covered; the food system is not",
@@ -83,7 +86,7 @@ window.DASHBOARD_DATA = {
         },
         {
           title: "Adaptation finance is fragile",
-          text: "The National Adaptation Fund for Climate Change — 30 projects worth ₹847 crore across 27 States and UTs — was quietly downgraded from a 'scheme' to a 'non-scheme' in November 2022, a telling signal of how precarious ring-fenced adaptation money remains."
+          text: "The National Adaptation Fund for Climate Change — 30 projects worth $97 M across 27 States and UTs — was quietly downgraded from a 'scheme' to a 'non-scheme' in November 2022, a telling signal of how precarious ring-fenced adaptation money remains."
         },
         {
           title: "Adoption follows payback",
@@ -97,8 +100,8 @@ window.DASHBOARD_DATA = {
     }
 
     /* ---------------------------------------------------------
-       COUNTRY TEMPLATE — copy this, fill it in, add a comma
-       after the India block above, and paste it in.
+       COUNTRY TEMPLATE — copy, fill in, add a comma after the
+       India block above, and paste in.
 
     ,{
       code: "XXX",
@@ -107,7 +110,7 @@ window.DASHBOARD_DATA = {
       subtitle: "One-line focus of the research",
       thesis: "The core argument in one or two sentences.",
       kpis: [
-        { label: "Indicator", value: "—", note: "year / source" }
+        { label: "Indicator", value: "$— M", note: "year / source" }
       ],
       chartSlots: [
         { title: "Chart title", hint: "what it will show" }
