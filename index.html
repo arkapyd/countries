@@ -233,14 +233,7 @@
       <div class="body-left">
         <p class="thesis" id="thesis"></p>
         <section class="kpi-strip" id="kpiStrip" aria-label="Summary indicators"></section>
-        <section class="panel">
-          <div class="panel-head">
-            <h3 id="cropsHeading">Crop statistics</h3>
-            <p class="panel-sub" id="cropsSub"></p>
-          </div>
-          <div class="tab-row" id="tabRow" role="tablist" aria-label="Crop statistics tabs"></div>
-          <div id="tabPanel" role="tabpanel"></div>
-        </section>
+        <div id="windowsContainer"></div>
       </div>
 
       <aside class="body-right">
@@ -268,7 +261,7 @@
   var meta = D.meta || {};
   var countries = D.countries;
   var activeCode = countries[0].code;
-  var activeTabId = null;
+  var activeTabIds = {};
 
   var $ = function (id) { return document.getElementById(id); };
   var el = function (tag, cls, html) {
@@ -432,32 +425,63 @@
     });
   }
 
-  function renderTabs(c) {
-    var crops = c.crops || { tabs: [] };
-    $("cropsHeading").textContent = crops.heading || "Crop statistics";
-    $("cropsSub").textContent = crops.sub || "";
-    var row = $("tabRow");
-    row.innerHTML = "";
-    var tabs = crops.tabs || [];
-    if (!tabs.length) { $("tabPanel").innerHTML = '<p class="tab-note">No crop statistics recorded yet.</p>'; return; }
-    if (!activeTabId || !tabs.some(function (t) { return t.id === activeTabId; })) activeTabId = tabs[0].id;
-    tabs.forEach(function (t) {
-      var b = el("button", "tab-btn" + (t.id === activeTabId ? " active" : ""), esc(t.label));
-      b.setAttribute("role", "tab");
-      b.setAttribute("aria-selected", t.id === activeTabId ? "true" : "false");
-      b.addEventListener("click", function () { activeTabId = t.id; renderTabs(c); });
-      row.appendChild(b);
+  function renderWindows(c) {
+    var container = $("windowsContainer");
+    container.innerHTML = "";
+    var windows = c.windows || [];
+    
+    // fallback to wrap old crops data if present but windows array is not
+    if (!windows.length && c.crops) {
+      windows = [{ id: "crops", heading: c.crops.heading, sub: c.crops.sub, tabs: c.crops.tabs }];
+    }
+
+    windows.forEach(function(win) {
+      var section = el("section", "panel");
+      var head = el("div", "panel-head");
+      head.appendChild(el("h3", "", esc(win.heading)));
+      if (win.sub) head.appendChild(el("p", "panel-sub", esc(win.sub)));
+      section.appendChild(head);
+
+      var tabRow = el("div", "tab-row");
+      tabRow.setAttribute("role", "tablist");
+      
+      var tabPanel = el("div");
+      tabPanel.setAttribute("role", "tabpanel");
+
+      var tabs = win.tabs || [];
+      if (!activeTabIds[win.id] && tabs.length) {
+        activeTabIds[win.id] = tabs[0].id;
+      }
+
+      tabs.forEach(function(t) {
+        var isActive = t.id === activeTabIds[win.id];
+        var b = el("button", "tab-btn" + (isActive ? " active" : ""), esc(t.label));
+        b.setAttribute("role", "tab");
+        b.setAttribute("aria-selected", isActive ? "true" : "false");
+        b.addEventListener("click", function() {
+          activeTabIds[win.id] = t.id;
+          renderWindows(c);
+        });
+        tabRow.appendChild(b);
+      });
+
+      section.appendChild(tabRow);
+      section.appendChild(tabPanel);
+      container.appendChild(section);
+
+      var activeTab = tabs.filter(function(t) { return t.id === activeTabIds[win.id]; })[0];
+      renderTabPanel(activeTab, tabPanel);
     });
-    renderTabPanel(tabs.filter(function (t) { return t.id === activeTabId; })[0]);
   }
 
-  function renderTabPanel(tab) {
-    var panel = $("tabPanel");
-    panel.innerHTML = "";
-    if (!tab) return;
-    if (tab.note) panel.appendChild(el("p", "tab-note", esc(tab.note)));
+  function renderTabPanel(tab, panelContainer) {
+    panelContainer.innerHTML = "";
+    if (!tab) {
+       panelContainer.innerHTML = '<p class="tab-note">No statistics recorded yet.</p>';
+       return;
+    }
+    if (tab.note) panelContainer.appendChild(el("p", "tab-note", esc(tab.note)));
 
-    // support both new `blocks` and legacy charts/cards/badges
     var blocks = tab.blocks;
     if (!blocks) {
       blocks = [];
@@ -467,14 +491,13 @@
     }
 
     blocks.forEach(function (blk) {
-      if (blk.type === "chart") panel.appendChild(buildChartCard(blk.chart || blk));
-      else if (blk.type === "card") panel.appendChild(buildCard(blk.card || blk));
-      else if (blk.type === "badges") panel.appendChild(buildBadges(blk));
+      if (blk.type === "chart") panelContainer.appendChild(buildChartCard(blk.chart || blk));
+      else if (blk.type === "card") panelContainer.appendChild(buildCard(blk.card || blk));
+      else if (blk.type === "badges") panelContainer.appendChild(buildBadges(blk));
     });
 
-    growBars(panel);
+    growBars(panelContainer);
   }
-
   function renderInsights(c) {
     var rail = $("insightRail");
     rail.innerHTML = "";
@@ -510,14 +533,14 @@
     var c = countries.filter(function (x) { return x.code === code; })[0];
     if (!c) return;
     activeCode = code;
-    activeTabId = null;
+    activeTabIds = {};
     $("activeRegion").textContent = c.region || "";
     $("activeName").textContent = c.name || "";
     $("activeSub").textContent = c.subtitle || "";
     $("thesis").textContent = c.thesis || "";
     renderSidebar();
     renderKpis(c);
-    renderTabs(c);
+    renderWindows(c);
     renderInsights(c);
     renderGlossary(c);
   }
