@@ -4,25 +4,31 @@
    The only file you edit to add or change content.
    index.html reads window.DASHBOARD_DATA and renders everything.
 
-   MONEY: all monetary figures are in USD million, converted from
-   the source's ₹ figures at ₹96.5 = US$1 (stated in the header
-   chip). If you re-base, update meta.conversionNote and the
-   figures below together.
+   MONEY: monetary figures in USD million, converted at ₹96.5 = US$1
+   where drawn from the paper. Trade figures in the Import/Export
+   tabs are external FY2024–25 values (APEDA / SEA / PIB), already
+   reported in USD by those sources.
 
    CROPS TABS: each country carries a `crops` object with three
-   tabs — production / import / export. A tab can hold:
-     - note    : one-line caveat shown under the tab row
-     - charts  : [{ title, unit, footnote, sources, bars }]
-         bars[]   : { label, value, display, sourceUrl }
-                    value drives bar length, display is printed,
-                    sourceUrl makes the whole row a link
-         sources[]: [{ label, url }] — printed under the chart
-     - cards   : [{ title, text, source:{label,url} }] —
-                 qualitative findings; card is a link if source set
-     - badges  : [{ label, detail }] stamp chips, all linking to
-                 badgesSource:{label,url} if set
+   tabs — production / import / export. Each tab has:
+     - note   : one-line context under the tab row
+     - blocks : ordered list rendered top-to-bottom. Block types:
+         { type:"chart", title, unit, footnote, sources, bars }
+             bars[]: { label, value, display, sourceUrl,
+                       states, statesSource:{label,url} }
+             - value drives bar length; display is printed
+             - sourceUrl makes the bar row link to the figure's source
+             - states (optional) is the "State (Region)" producer list
+               that expands under the row on hover, with statesSource
+         { type:"card", title, text, source:{label,url} }
+         { type:"badges", title, source:{label,url}, items:[{label,detail}] }
 
-   To add a country: copy the COUNTRY TEMPLATE at the bottom.
+   Region tags use N/S/E/W/NE only:
+     North  UP, Punjab, Haryana, Rajasthan
+     West   Madhya Pradesh, Maharashtra, Gujarat
+     East   West Bengal, Bihar, Odisha
+     South  Telangana, Andhra Pradesh, Karnataka, Tamil Nadu
+     North-East  Assam, etc.
    ============================================================= */
 
 window.DASHBOARD_DATA = {
@@ -31,7 +37,7 @@ window.DASHBOARD_DATA = {
     fileLabel: "Research file",
     lastUpdated: "2026-07-20",
     baselineNote: "Baseline: Sustainable agriculture in India",
-    conversionNote: "Monetary figures in USD million, at ₹96.5 = US$1"
+    conversionNote: "Paper figures in USD million, at ₹96.5 = US$1"
   },
 
   countries: [
@@ -58,24 +64,35 @@ window.DASHBOARD_DATA = {
 
       crops: {
         heading: "Crop statistics",
-        sub: "Production · import · export — figures drawn from the baseline document only; click any row or card to open its cited source",
+        sub: "Production · import · export — hover any crop row for its major producing states; click any row, card or badge to open its source",
         tabs: [
+
+          /* ---------------- PRODUCTION ---------------- */
           {
             id: "production",
             label: "Production",
-            charts: [
+            blocks: [
               {
+                type: "chart",
                 title: "Output of major crops, 2024–25",
                 unit: "million tonnes",
                 bars: [
                   { label: "Rice", value: 150.18, display: "150.18",
-                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/" },
+                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/",
+                    states: "Uttar Pradesh (North), West Bengal (East), Telangana (South), Punjab (North)",
+                    statesSource: { label: "Wikipedia — Rice production in India", url: "https://en.wikipedia.org/wiki/Rice_production_in_India" } },
                   { label: "Wheat", value: 117.94, display: "117.94",
-                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/" },
+                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/",
+                    states: "Uttar Pradesh (North), Madhya Pradesh (West), Punjab (North), Haryana (North)",
+                    statesSource: { label: "Wikipedia — Wheat production in India", url: "https://en.wikipedia.org/wiki/Wheat_production_in_India" } },
                   { label: "Pulses", value: 25.68, display: "25.68",
-                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/" },
+                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/",
+                    states: "Madhya Pradesh (West), Maharashtra (West), Rajasthan (North), Uttar Pradesh (North)",
+                    statesSource: { label: "PIB — India's Resilient Production Systems in Agriculture", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" } },
                   { label: "Millets (Shree Anna)", value: 18.59, display: "18.59",
-                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/" }
+                    sourceUrl: "https://ddnews.gov.in/en/record-foodgrain-production-marks-highest-growth-in-a-decade/",
+                    states: "Rajasthan (North), Maharashtra (West), Karnataka (South)",
+                    statesSource: { label: "PIB — India's Resilient Production Systems in Agriculture", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" } }
                 ],
                 footnote: "Total foodgrain production: 357.73 mt in 2024–25 — a record. Pulses and millets output are both the world's largest.",
                 sources: [
@@ -84,18 +101,27 @@ window.DASHBOARD_DATA = {
                 ]
               },
               {
+                type: "chart",
                 title: "Share of output grown on rain-fed land",
                 unit: "%",
                 max: 100,
                 bars: [
                   { label: "Nutri-cereals", value: 85, display: "85",
-                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf" },
+                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf",
+                    states: "Rajasthan (North), Karnataka (South), Maharashtra (West)",
+                    statesSource: { label: "PIB — India's Resilient Production Systems in Agriculture", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" } },
                   { label: "Pulses", value: 83, display: "83",
-                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf" },
+                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf",
+                    states: "Madhya Pradesh (West), Maharashtra (West), Rajasthan (North), Uttar Pradesh (North)",
+                    statesSource: { label: "PIB — India's Resilient Production Systems in Agriculture", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" } },
                   { label: "Oilseeds", value: 70, display: "70",
-                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf" },
+                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf",
+                    states: "Rajasthan (North), Gujarat (West), Madhya Pradesh (West), Maharashtra (West)",
+                    statesSource: { label: "FindEasy — Indian states by oilseeds production", url: "https://www.findeasy.in/indian-states-by-oilseeds-production/" } },
                   { label: "Cotton", value: 65, display: "65",
-                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf" },
+                    sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf",
+                    states: "Gujarat (West), Maharashtra (West), Telangana (South), Rajasthan (North)",
+                    statesSource: { label: "PIB — India's Resilient Production Systems in Agriculture", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" } },
                   { label: "All foodgrains", value: 40, display: "~40",
                     sourceUrl: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf" }
                 ],
@@ -106,6 +132,7 @@ window.DASHBOARD_DATA = {
                 ]
               },
               {
+                type: "chart",
                 title: "Crop diversity by water regime",
                 unit: "major crops grown annually",
                 bars: [
@@ -119,33 +146,57 @@ window.DASHBOARD_DATA = {
                   { label: "DA&FW — Rainfed Agriculture Position Paper (PDF)",
                     url: "https://agriwelfare.gov.in/Documents/121233187_rapfinaldraft%20(1)_repaired.pdf" }
                 ]
+              },
+              {
+                type: "badges",
+                title: "World production ranks (FAOSTAT-based) — click any badge for the source",
+                source: {
+                  label: "Wikipedia — List of largest producing countries of agricultural commodities (FAOSTAT)",
+                  url: "https://en.wikipedia.org/wiki/List_of_largest_producing_countries_of_agricultural_commodities"
+                },
+                items: [
+                  { label: "Millets", detail: "1st" },
+                  { label: "Rice", detail: "1st" },
+                  { label: "Wheat", detail: "2nd" },
+                  { label: "Milk (cow, buffalo, goat)", detail: "1st" },
+                  { label: "Sugarcane", detail: "2nd" },
+                  { label: "Honey", detail: "2nd" },
+                  { label: "Tobacco", detail: "2nd" },
+                  { label: "Vegetables", detail: "1st–3rd" },
+                  { label: "Meat", detail: "1st–3rd" },
+                  { label: "Spices", detail: "1st–3rd" },
+                  { label: "Fibres", detail: "1st–3rd" }
+                ]
               }
-            ],
-            badges: [
-              { label: "Millets", detail: "1st" },
-              { label: "Rice", detail: "1st" },
-              { label: "Wheat", detail: "2nd" },
-              { label: "Milk (cow, buffalo, goat)", detail: "1st" },
-              { label: "Sugarcane", detail: "2nd" },
-              { label: "Honey", detail: "2nd" },
-              { label: "Tobacco", detail: "2nd" },
-              { label: "Vegetables", detail: "1st–3rd" },
-              { label: "Meat", detail: "1st–3rd" },
-              { label: "Spices", detail: "1st–3rd" },
-              { label: "Fibres", detail: "1st–3rd" }
-            ],
-            badgesTitle: "World production ranks (FAOSTAT-based) — click any badge for the source",
-            badgesSource: {
-              label: "Wikipedia — List of largest producing countries of agricultural commodities (FAOSTAT)",
-              url: "https://en.wikipedia.org/wiki/List_of_largest_producing_countries_of_agricultural_commodities"
-            }
+            ]
           },
+
+          /* ---------------- IMPORT ---------------- */
           {
             id: "import",
             label: "Import",
-            note: "The baseline document carries no quantitative import series — the findings below are its qualitative record. Slot figures in here once a trade source joins the baseline.",
-            cards: [
+            note: "Top farm imports below are external FY2024–25 trade figures (SEA / industry data), beyond the baseline paper. The bamboo and timber items are the paper's own qualitative findings, kept in priority order below the numbers.",
+            blocks: [
               {
+                type: "chart",
+                title: "Top agricultural imports by value, 2024–25",
+                unit: "USD million",
+                bars: [
+                  { label: "Edible / vegetable oils", value: 20800, display: "20,800",
+                    sourceUrl: "https://www.business-standard.com/economy/news/india-s-vegetable-oil-imports-flat-at-16-3-million-tonnes-in-2024-25-sea-125111301061_1.html" },
+                  { label: "Pulses", value: 5500, display: "5,500",
+                    sourceUrl: "https://striveedgeias.in/india-pulses-edible-oil-imports/" }
+                ],
+                footnote: "Edible oil is India's single largest farm import — 16.3 mt in 2024–25 (palm 7.58, soybean 5.47 (record), soft oils 8.43); roughly 57–60% of edible-oil demand is met by imports. Pulses imports hit a record 7.3 mt. Fresh fruit (apples), raw cashew and some spices make up most of the remainder.",
+                sources: [
+                  { label: "Business Standard / SEA — vegetable oil imports 2024–25",
+                    url: "https://www.business-standard.com/economy/news/india-s-vegetable-oil-imports-flat-at-16-3-million-tonnes-in-2024-25-sea-125111301061_1.html" },
+                  { label: "StriveEdge IAS — India's pulses & edible-oil import burden 2024–25",
+                    url: "https://striveedgeias.in/india-pulses-edible-oil-imports/" }
+                ]
+              },
+              {
+                type: "card",
                 title: "Bamboo — a net importer, by policy admission",
                 text: "The National Bamboo Mission exists to change India's status as a net importer of bamboo, reading the sector's low productivity as headroom for commercial value chains. Restructured in 2018 with a $134 M outlay ($98 M central share).",
                 source: {
@@ -154,6 +205,7 @@ window.DASHBOARD_DATA = {
                 }
               },
               {
+                type: "card",
                 title: "Timber — demand met largely from farms, not forests",
                 text: "Trees outside forests already supply about 65% of India's timber demand — the document's core case for agroforestry under SMAF ($28 M indicative outlay, RKVY component 2021–26) and its Har Medh Par Pedh push.",
                 source: {
@@ -163,22 +215,52 @@ window.DASHBOARD_DATA = {
               }
             ]
           },
+
+          /* ---------------- EXPORT ---------------- */
           {
             id: "export",
             label: "Export",
-            note: "No quantitative export series in the baseline either — what it offers is the export ambition and the certified-organic production base being built behind it.",
-            cards: [
+            note: "Top farm exports below are external FY2024–25 figures (PIB / APEDA), beyond the baseline paper. The organic-export findings from the paper (PKVY, then MOVCDNER) are kept in priority order below the top exporters.",
+            blocks: [
               {
-                title: "Organic produce — the stated export play",
+                type: "chart",
+                title: "Top agricultural exports by value, 2024–25",
+                unit: "USD million",
+                bars: [
+                  { label: "Rice (basmati + non-basmati)", value: 12950, display: "12,950",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" },
+                  { label: "Marine products", value: 7410, display: "7,410",
+                    sourceUrl: "https://www.naviexports.com/blog/top-10-indian-agricultural-products-in-global-demand/" },
+                  { label: "Spices", value: 4520, display: "4,520",
+                    sourceUrl: "https://www.naviexports.com/blog/top-10-indian-agricultural-products-in-global-demand/" },
+                  { label: "Buffalo meat", value: 3800, display: "~3,800",
+                    sourceUrl: "https://www.naviexports.com/blog/top-10-indian-agricultural-products-in-global-demand/" },
+                  { label: "Fruits & vegetables", value: 1819, display: "1,819",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" },
+                  { label: "Coffee", value: 1810, display: "1,810",
+                    sourceUrl: "https://www.naviexports.com/blog/top-10-indian-agricultural-products-in-global-demand/" },
+                  { label: "Tea", value: 920, display: "920",
+                    sourceUrl: "https://www.naviexports.com/blog/top-10-indian-agricultural-products-in-global-demand/" }
+                ],
+                footnote: "Total agri exports ≈ $51.9 billion in FY2024–25. Rice is the single largest, exported to 170+ countries; cotton, sugar and castor oil round out the next tier (sugar and wheat sat under export curbs through the year).",
+                sources: [
+                  { label: "PIB — India's Resilient Production Systems (rice, fruits & vegetables)",
+                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2248987&reg=3&lang=1" },
+                  { label: "Navi Exports — top Indian agricultural exports FY25 breakdown (marine, spices, meat, coffee, tea)",
+                    url: "https://www.naviexports.com/blog/top-10-indian-agricultural-products-in-global-demand/" }
+                ]
+              },
+              {
+                type: "card",
+                title: "Organic produce — the paper's export play (1st: PKVY)",
                 text: "PKVY and MOVCDNER aim to pitch India — and the North-East specifically — as established exporters of organic produce, developing certified production in a value-chain mode that links organic growers to consumers. Combined: ≈16.7 lakh ha and 27.5 lakh farmers in certified or transition production; $225 M released under PKVY to Dec 2024.",
                 source: {
                   label: "PIB — Nurturing Organic Farming, Empowering Farmers (Oct 2025)",
                   url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2175205&reg=48&lang=2"
                 }
-              }
-            ],
-            charts: [
+              },
               {
+                type: "chart",
                 title: "Certified / transition organic base behind the export push",
                 unit: "lakh hectares",
                 bars: [
@@ -187,14 +269,12 @@ window.DASHBOARD_DATA = {
                   { label: "MOVCDNER (North-East)", value: 1.73, display: "1.73",
                     sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2097882" }
                 ],
-                footnote: "PKVY: 52,289 clusters, 25.30 lakh farmers. MOVCDNER: 434 Farmer Producer Companies, 2.19 lakh farmers.",
+                footnote: "Priority order: PKVY nationwide (52,289 clusters, 25.30 lakh farmers) leads; MOVCDNER (434 Farmer Producer Companies, 2.19 lakh farmers) is the North-East-specific mission.",
                 sources: [
                   { label: "PIB — Nurturing Organic Farming (PKVY figures)",
                     url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2175205&reg=48&lang=2" },
-                  { label: "PIB — Economic Survey 2024–25, agriculture chapter (MOVCDNER figures)",
-                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2097882" },
-                  { label: "PIB — National Mission on Natural Farming press note (PKVY releases to Dec 2024)",
-                    url: "https://www.pib.gov.in/PressNoteDetails.aspx?ModuleId=3&NoteId=155019" }
+                  { label: "PIB — Economic Survey 2024–25 agriculture chapter (MOVCDNER figures)",
+                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2097882" }
                 ]
               }
             ]
@@ -244,35 +324,30 @@ window.DASHBOARD_DATA = {
       region: "Region",
       subtitle: "One-line focus of the research",
       thesis: "The core argument in one or two sentences.",
-      kpis: [
-        { label: "Indicator", value: "$— M", note: "year / source" }
-      ],
+      kpis: [ { label: "Indicator", value: "$— M", note: "year / source" } ],
       crops: {
         heading: "Crop statistics",
         sub: "Production · import · export",
         tabs: [
-          { id: "production", label: "Production",
-            charts: [
-              { title: "Chart title", unit: "unit",
-                bars: [ { label: "Crop", value: 0, display: "0",
-                          sourceUrl: "https://..." } ],
-                footnote: "optional",
-                sources: [ { label: "Source name", url: "https://..." } ] }
-            ],
-            badges: [ { label: "Crop", detail: "rank" } ],
-            badgesTitle: "optional",
-            badgesSource: { label: "Source name", url: "https://..." }
-          },
-          { id: "import", label: "Import", note: "optional caveat",
-            cards: [ { title: "Finding", text: "...",
-                       source: { label: "Source name", url: "https://..." } } ] },
-          { id: "export", label: "Export",
-            cards: [], charts: [] }
+          { id: "production", label: "Production", blocks: [
+              { type:"chart", title:"...", unit:"...",
+                bars:[ { label:"Crop", value:0, display:"0",
+                         sourceUrl:"https://...",
+                         states:"State (Region), State (Region)",
+                         statesSource:{ label:"Wikipedia — ...", url:"https://..." } } ],
+                footnote:"optional",
+                sources:[ { label:"...", url:"https://..." } ] },
+              { type:"badges", title:"...", source:{label:"...",url:"https://..."},
+                items:[ { label:"Crop", detail:"rank" } ] }
+          ] },
+          { id:"import", label:"Import", note:"optional", blocks:[
+              { type:"chart", title:"...", unit:"USD million", bars:[...], sources:[...] },
+              { type:"card", title:"...", text:"...", source:{label:"...",url:"https://..."} }
+          ] },
+          { id:"export", label:"Export", note:"optional", blocks:[ ] }
         ]
       },
-      insights: [
-        { title: "Takeaway", text: "The finding, in a sentence or two." }
-      ]
+      insights: [ { title:"Takeaway", text:"..." } ]
     }
     --------------------------------------------------------- */
   ]
