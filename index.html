@@ -91,9 +91,12 @@
   .chart-unit{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--burnt);margin:0 0 10px;}
   .chart-svg{width:100%;height:auto;display:block;}
   .chart-foot{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:8px 0 2px;border-top:1px solid var(--line);padding-top:8px;}
-  .chart-source{font-family:var(--font-mono);font-size:10px;color:var(--burnt);margin-bottom:4px;display:block;}
+  .chart-src{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);line-height:1.55;margin:6px 0 2px;}
+  .chart-src a{color:var(--burnt);text-decoration:underline;text-decoration-color:var(--cream-orange-hot);text-underline-offset:2px;transition:color .16s,font-weight .16s;}
+  .chart-src a:hover{color:#000;font-weight:700;}
 
-  .bar-row { cursor: pointer; } /* Added clickable pointer */
+  .bar-link{cursor:pointer;outline:none;}
+  .bar-link:focus-visible .bar{stroke-width:3;}
   .bar-row .bar{fill:var(--cream-orange);stroke:var(--ink);stroke-width:1.5;transition:fill .16s ease;}
   .bar-row .bar-label{font-family:var(--font-mono);font-size:11px;fill:var(--ink);transition:font-weight .16s,fill .16s;}
   .bar-row .bar-value{font-family:var(--font-mono);font-size:11.5px;font-weight:600;fill:var(--burnt);transition:font-weight .16s,fill .16s;}
@@ -101,19 +104,23 @@
   .bar-row:hover .bar-label,.bar-row:hover .bar-value{fill:#000;font-weight:700;}
 
   .badge-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:4px 0 10px;}
-  .badge-wrap{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:6px;}
-  .rank-badge{font-family:var(--font-mono);font-size:11px;border:2px solid var(--cream-orange-hot);background:var(--eggshell-raised);color:var(--ink);border-radius:2px;padding:5px 9px;transform:rotate(-1.2deg);transition:var(--pop);cursor:default;}
+  .badge-wrap{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:8px;}
+  .rank-badge{display:inline-block;font-family:var(--font-mono);font-size:11px;border:2px solid var(--cream-orange-hot);background:var(--eggshell-raised);color:var(--ink);text-decoration:none;border-radius:2px;padding:5px 9px;transform:rotate(-1.2deg);transition:var(--pop);cursor:default;}
+  a.rank-badge{cursor:pointer;}
   .rank-badge:nth-child(even){transform:rotate(1.2deg);}
   .rank-badge b{color:var(--burnt);font-weight:600;}
   .rank-badge:hover{background:var(--cream-orange);border-color:var(--ink);color:#000;font-weight:700;transform:scale(1.08) rotate(0deg);box-shadow:3px 3px 0 var(--ink);}
   .rank-badge:hover b{color:#000;font-weight:700;}
 
-  .trade-card{background:var(--eggshell-raised);border:1.5px solid var(--line-strong);border-left:4px solid var(--cream-orange-hot);border-radius:var(--radius);padding:14px 17px;margin-bottom:12px;transition:var(--pop);}
+  .trade-card{display:block;background:var(--eggshell-raised);border:1.5px solid var(--line-strong);border-left:4px solid var(--cream-orange-hot);border-radius:var(--radius);padding:14px 17px;margin-bottom:12px;transition:var(--pop);text-decoration:none;color:inherit;}
+  a.trade-card{cursor:pointer;}
   .trade-card:hover{background:var(--cream-orange);border-color:var(--ink);border-left-color:var(--ink);transform:scale(1.02);box-shadow:4px 4px 0 var(--ink);}
   .trade-card:hover h4,.trade-card:hover p{color:#000;}
-  .trade-card:hover p{font-weight:700;}
+  .trade-card:hover .trade-text{font-weight:700;}
   .trade-card h4{font-family:var(--font-display);font-size:15.5px;font-weight:700;margin:0 0 6px;transition:color .16s;}
-  .trade-card p{font-size:13px;line-height:1.55;margin:0;color:var(--ink);transition:color .16s,font-weight .16s;}
+  .trade-card .trade-text{font-size:13px;line-height:1.55;margin:0;color:var(--ink);transition:color .16s,font-weight .16s;}
+  .trade-src{font-family:var(--font-mono);font-size:10.5px;color:var(--burnt);line-height:1.45;margin:9px 0 0;border-top:1px solid var(--line);padding-top:7px;transition:color .16s,font-weight .16s;}
+  .trade-card:hover .trade-src{color:#000;font-weight:700;border-top-color:var(--ink);}
 
   /* insights rail */
   .rail-head{border-bottom:2px solid var(--ink);padding-bottom:7px;margin-bottom:14px;}
@@ -205,105 +212,8 @@
 
 </div>
 
+<script src="data.js"></script>
 <script>
-// Generating the embedded payload based on the provided document[cite: 1]
-window.DASHBOARD_DATA = {
-  meta: {
-    title: "Agriculture & Climate Resilience Dashboard[cite: 1]",
-    fileLabel: "Research Report",
-    lastUpdated: "2026-27",
-    conversionNote: "Values based on latest 2024-25 estimates[cite: 1]"
-  },
-  countries: [
-    {
-      code: "IN",
-      name: "India",
-      region: "South Asia",
-      subtitle: "Context, Policy, and Challenges",
-      thesis: "India’s stance on climate action in agriculture is adaptation-first, with mitigation arriving as a by-outcome of adaptive practice.[cite: 1]",
-      kpis: [
-        { label: "Agriculture Workforce", value: "46%+", note: "of national workforce[cite: 1]" },
-        { label: "GVA Contribution", value: "18.4%", note: "at current prices (2022-23)[cite: 1]" },
-        { label: "Rain-fed Sown Area", value: "55%", note: "supporting 61% of farmers[cite: 1]" },
-        { label: "Foodgrain Production", value: "357.7m", note: "tonnes in 2024-25[cite: 1]" }
-      ],
-      crops: {
-        heading: "Production & Investment Statistics",
-        sub: "Data on leading yields and agricultural budget composition[cite: 1]",
-        tabs: [
-          {
-            id: "production",
-            label: "Production",
-            charts: [
-              {
-                title: "Key Crop Production (2024-25)",
-                unit: "Million Tonnes",
-                source: "National Food Security Mission (NFSM) / ICAR",
-                bars: [
-                  { label: "Rice", value: 150.18, url: "https://nfsm.gov.in" },
-                  { label: "Wheat", value: 117.94, url: "https://nfsm.gov.in" },
-                  { label: "Pulses", value: 25.68, url: "https://nfsm.gov.in" },
-                  { label: "Millets", value: 18.59, url: "https://nfsm.gov.in" }
-                ]
-              },
-              {
-                title: "Agriculture Budget Allocation (2026-27)",
-                unit: "₹ Crore",
-                source: "Demand for Grants Analysis, PRS Legislative Research",
-                bars: [
-                  { label: "PM-KISAN", value: 63500, url: "https://prsindia.org" },
-                  { label: "Credit Subvention", value: 22600, url: "https://prsindia.org" },
-                  { label: "Crop Insurance", value: 12200, url: "https://prsindia.org" },
-                  { label: "RKVY", value: 8550, url: "https://prsindia.org" }
-                ]
-              }
-            ],
-            badgesTitle: "Global Agricultural Ranks",
-            badges: [
-              { label: "Millets", detail: "1st globally[cite: 1]" },
-              { label: "Rice", detail: "1st globally[cite: 1]" },
-              { label: "Wheat", detail: "2nd globally[cite: 1]" },
-              { label: "Pulses", detail: "1st globally[cite: 1]" }
-            ]
-          },
-          {
-            id: "resilience",
-            label: "Climate Interventions",
-            cards: [
-              {
-                title: "Micro-irrigation Expansion",
-                text: "109 lakh hectares brought under micro-irrigation since 2015-16, with ₹21,968.75 crore released to Dec 2024.[cite: 1]"
-              },
-              {
-                title: "Soil Health Cards",
-                text: "Over 24.60 crore cards issued since 2015 assessing twelve key soil parameters to boost sustainable land management.[cite: 1]"
-              },
-              {
-                title: "Organic & Natural Farming",
-                text: "PKVY and MOVCDNER have mobilised roughly 16.7 lakh hectares across 27.5 lakh farmers to establish robust organic value chains.[cite: 1]"
-              }
-            ]
-          }
-        ]
-      },
-      insights: [
-        {
-          title: "Vulnerability Exposure",
-          text: "Over 80% of India’s population lives in districts highly vulnerable to hydro-meteorological disasters such as floods, droughts, and cyclones.[cite: 1]"
-        },
-        {
-          title: "Adaptation Focus",
-          text: "Mandating sustainable practice shifts on smallholders without providing financial insulation is contrary to equity principles; hence the adaptation-first stance.[cite: 1]"
-        },
-        {
-          title: "Infrastructure Gap",
-          text: "While resilience is promoted on the farm via water and soil initiatives, wider supply chain processing, packaging, and transport lag behind.[cite: 1]"
-        }
-      ]
-    }
-  ]
-};
-
 (function () {
   var D = window.DASHBOARD_DATA;
   if (!D || !D.countries || !D.countries.length) {
@@ -353,7 +263,7 @@ window.DASHBOARD_DATA = {
     } catch (e) { /* audio unavailable — stay silent */ }
   }
   document.addEventListener("click", function (e) {
-    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .sound-toggle, .bar-row")) tick();
+    if (e.target.closest(".country-row, .kpi-card, .insight-card, .trade-card, .chart-card, .tab-btn, .rank-badge, .bar-row, .sound-toggle")) tick();
   });
   $("soundToggle").addEventListener("click", function () {
     soundOn = !soundOn;
@@ -377,20 +287,21 @@ window.DASHBOARD_DATA = {
     var h = CH.padTop + bars.length * CH.rowH;
     var svg = '<svg class="chart-svg" viewBox="0 0 ' + CH.w + ' ' + h + '" role="img" aria-label="' +
       esc(chart.title) + '">';
-    
     bars.forEach(function (b, i) {
       var y = CH.padTop + i * CH.rowH;
       var w = Math.max(3, Math.round((b.value / max) * CH.maxBarW));
       var cy = y + CH.barH / 2 + 4;
-      
-      // Inject url redirection for clickable bars
-      var clickAction = b.url ? ' onclick="window.open(\'' + esc(b.url) + '\', \'_blank\')"' : '';
-
-      svg += '<g class="bar-row"' + clickAction + '>' +
+      var inner = '<g class="bar-row">' +
+        (b.sourceUrl ? '<title>Open cited source</title>' : '') +
         '<text class="bar-label" x="' + (CH.barX - 10) + '" y="' + cy + '" text-anchor="end">' + esc(b.label) + '</text>' +
         '<rect class="bar" data-w="' + w + '" x="' + CH.barX + '" y="' + (y + 3) + '" width="0" height="' + CH.barH + '" rx="2"></rect>' +
         '<text class="bar-value" x="' + (CH.barX + w + 9) + '" y="' + cy + '">' + esc(b.display != null ? b.display : b.value) + '</text>' +
         '</g>';
+      if (b.sourceUrl) {
+        svg += '<a class="bar-link" href="' + esc(b.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>';
+      } else {
+        svg += inner;
+      }
     });
     svg += '</svg>';
     return svg;
@@ -403,6 +314,13 @@ window.DASHBOARD_DATA = {
         requestAnimationFrame(function () { r.style.width = r.getAttribute("data-w") + "px"; });
       });
     });
+  }
+  function sourcesLine(sources) {
+    if (!sources || !sources.length) return "";
+    var links = sources.map(function (s) {
+      return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.label) + ' ↗</a>';
+    }).join(' · ');
+    return '<p class="chart-src">' + (sources.length > 1 ? 'Sources: ' : 'Source: ') + links + '</p>';
   }
 
   /* ---------- renderers ---------- */
@@ -470,27 +388,50 @@ window.DASHBOARD_DATA = {
       panel.appendChild(el("p", "tab-note", esc(tab.note)));
     }
     (tab.cards || []).forEach(function (card) {
-      panel.appendChild(el("div", "trade-card",
-        '<h4>' + esc(card.title) + '</h4><p>' + esc(card.text) + '</p>'));
+      var inner =
+        '<h4>' + esc(card.title) + '</h4>' +
+        '<p class="trade-text">' + esc(card.text) + '</p>' +
+        (card.source ? '<p class="trade-src">Source: ' + esc(card.source.label) + ' ↗</p>' : '');
+      var node;
+      if (card.source && card.source.url) {
+        node = el("a", "trade-card", inner);
+        node.setAttribute("href", card.source.url);
+        node.setAttribute("target", "_blank");
+        node.setAttribute("rel", "noopener noreferrer");
+      } else {
+        node = el("div", "trade-card", inner);
+      }
+      panel.appendChild(node);
     });
     (tab.charts || []).forEach(function (chart) {
       var cardHtml =
         '<p class="chart-title">' + esc(chart.title) + '</p>' +
         (chart.unit ? '<p class="chart-unit">' + esc(chart.unit) + '</p>' : '') +
         buildBarChart(chart) +
-        // Added rendering for the chart source footnote
-        (chart.source ? '<p class="chart-foot"><span class="chart-source">Source: ' + esc(chart.source) + '[cite: 1]</span></p>' : '') +
-        (chart.footnote ? '<p class="chart-foot">' + esc(chart.footnote) + '</p>' : '');
+        (chart.footnote ? '<p class="chart-foot">' + esc(chart.footnote) + '</p>' : '') +
+        sourcesLine(chart.sources);
       panel.appendChild(el("div", "chart-card", cardHtml));
     });
     if (tab.badges && tab.badges.length) {
       if (tab.badgesTitle) panel.appendChild(el("p", "badge-title", esc(tab.badgesTitle)));
       var wrap = el("div", "badge-wrap");
+      var src = tab.badgesSource;
       tab.badges.forEach(function (bd) {
-        wrap.appendChild(el("span", "rank-badge",
-          esc(bd.label) + ' — <b>' + esc(bd.detail) + '</b>'));
+        var inner = esc(bd.label) + ' — <b>' + esc(bd.detail) + '</b>';
+        var node;
+        if (src && src.url) {
+          node = el("a", "rank-badge", inner);
+          node.setAttribute("href", src.url);
+          node.setAttribute("target", "_blank");
+          node.setAttribute("rel", "noopener noreferrer");
+          node.setAttribute("title", "Open cited source");
+        } else {
+          node = el("span", "rank-badge", inner);
+        }
+        wrap.appendChild(node);
       });
       panel.appendChild(wrap);
+      if (src) panel.appendChild(el("div", "", sourcesLine([src])));
     }
     growBars(panel);
   }
