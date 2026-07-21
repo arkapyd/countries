@@ -97,7 +97,26 @@ window.DASHBOARD_DATA = {
         { term: "DD News", full: "Doordarshan News", note: "India's public-service broadcaster, cited for the production estimates." },
         { term: "UT", full: "Union Territory", note: "A region administered directly by the central government (plural: UTs)." },
         { term: "Shree Anna", full: "Millets / nutri-cereals", note: "The government's branding for millets such as bajra, jowar and ragi." },
-        { term: "rabi", full: "Winter cropping season", note: "Crops sown around October–December and harvested in spring (e.g. wheat)." }
+        { term: "rabi", full: "Winter cropping season", note: "Crops sown around October–December and harvested in spring (e.g. wheat)." },
+        { term: "NAPCC", full: "National Action Plan on Climate Change", note: "India's overarching climate strategy, built around nine national missions — NMSA is one." },
+        { term: "SAPCC", full: "State Action Plan on Climate Change", note: "State-level climate plans that mirror the NAPCC at the sub-national level." },
+        { term: "ICAR", full: "Indian Council of Agricultural Research", note: "The apex body for agricultural research, education and extension in India." },
+        { term: "IPCC", full: "Intergovernmental Panel on Climate Change", note: "UN scientific body whose protocols guide NICRA's district-level risk assessment." },
+        { term: "NARP", full: "National Agricultural Research Project", note: "ICAR project that raised agro-climatic zoning from 15 to 128 zones." },
+        { term: "CRV", full: "Climate Resilient Village", note: "NICRA demonstration villages showcasing location-specific resilient technologies." },
+        { term: "CCSAMMN", full: "Climate Change & Sustainable Agriculture: Monitoring, Modeling and Networking", note: "A two-way information channel linking farmers and policymakers." },
+        { term: "SAU", full: "State Agricultural University", note: "State universities delivering agricultural research and extension." },
+        { term: "KVK", full: "Krishi Vigyan Kendra", note: "District-level farm science centres for training and technology transfer." },
+        { term: "SHM", full: "Soil Health Management", note: "NMSA component promoting location- and crop-specific soil health." },
+        { term: "RAD", full: "Rainfed Area Development", note: "NMSA component integrating crops, livestock, fishery and forestry on rain-fed land." },
+        { term: "OFWM", full: "On-Farm Water Management", note: "NMSA water-efficiency component, later folded into Per Drop More Crop." },
+        { term: "PMKSY", full: "Pradhan Mantri Krishi Sinchayee Yojana", note: "Umbrella irrigation scheme housing the Per Drop More Crop component." },
+        { term: "PDMC", full: "Per Drop More Crop", note: "Micro-irrigation component of PMKSY, now delivered under the RKVY." },
+        { term: "SHC", full: "Soil Health Card", note: "Scheme issuing farmers cards reporting twelve soil parameters." },
+        { term: "NMNF", full: "National Mission on Natural Farming", note: "Standalone natural-farming mission carved out in November 2024." },
+        { term: "BRC", full: "Bio-input Resource Centre", note: "Centres supplying natural-farming inputs to farmers under NMNF." },
+        { term: "Krishonnati Yojana", full: "Green Revolution – Krishonnati Yojana", note: "One of the two umbrella schemes (with RKVY) that now house most farm programmes." },
+        { term: "Har Medh Par Pedh", full: "'Trees on every field bund'", note: "The mission slogan of the Sub-Mission on Agroforestry (SMAF)." }
       ],
 
       windows: [
