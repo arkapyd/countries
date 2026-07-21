@@ -72,6 +72,7 @@
   .kpi-note{font-size:11px;color:var(--ink-soft);margin:0;line-height:1.35;transition:color .16s,font-weight .16s;}
 
   .panel{margin-bottom:30px;}
+  .panel.window + .panel.window{margin-top:8px;}
   .panel-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:7px;}
   .panel-head h3{font-family:var(--font-display);font-size:19px;font-weight:700;margin:0;}
   .panel-sub{font-size:12.5px;color:var(--ink-soft);margin:0;}
@@ -233,7 +234,7 @@
       <div class="body-left">
         <p class="thesis" id="thesis"></p>
         <section class="kpi-strip" id="kpiStrip" aria-label="Summary indicators"></section>
-        <div id="windowsContainer"></div>
+        <div id="windowsHost"></div>
       </div>
 
       <aside class="body-right">
@@ -261,7 +262,6 @@
   var meta = D.meta || {};
   var countries = D.countries;
   var activeCode = countries[0].code;
-  var activeTabIds = {};
 
   var $ = function (id) { return document.getElementById(id); };
   var el = function (tag, cls, html) {
@@ -425,63 +425,66 @@
     });
   }
 
-  function renderWindows(c) {
-    var container = $("windowsContainer");
-    container.innerHTML = "";
-    var windows = c.windows || [];
-    
-    // fallback to wrap old crops data if present but windows array is not
-    if (!windows.length && c.crops) {
-      windows = [{ id: "crops", heading: c.crops.heading, sub: c.crops.sub, tabs: c.crops.tabs }];
-    }
+  // remembers the active tab per window, keyed by window id
+  var activeTabByWindow = {};
 
-    windows.forEach(function(win) {
-      var section = el("section", "panel");
-      var head = el("div", "panel-head");
-      head.appendChild(el("h3", "", esc(win.heading)));
-      if (win.sub) head.appendChild(el("p", "panel-sub", esc(win.sub)));
-      section.appendChild(head);
-
-      var tabRow = el("div", "tab-row");
-      tabRow.setAttribute("role", "tablist");
-      
-      var tabPanel = el("div");
-      tabPanel.setAttribute("role", "tabpanel");
-
-      var tabs = win.tabs || [];
-      if (!activeTabIds[win.id] && tabs.length) {
-        activeTabIds[win.id] = tabs[0].id;
-      }
-
-      tabs.forEach(function(t) {
-        var isActive = t.id === activeTabIds[win.id];
-        var b = el("button", "tab-btn" + (isActive ? " active" : ""), esc(t.label));
-        b.setAttribute("role", "tab");
-        b.setAttribute("aria-selected", isActive ? "true" : "false");
-        b.addEventListener("click", function() {
-          activeTabIds[win.id] = t.id;
-          renderWindows(c);
-        });
-        tabRow.appendChild(b);
-      });
-
-      section.appendChild(tabRow);
-      section.appendChild(tabPanel);
-      container.appendChild(section);
-
-      var activeTab = tabs.filter(function(t) { return t.id === activeTabIds[win.id]; })[0];
-      renderTabPanel(activeTab, tabPanel);
-    });
+  function getWindows(c) {
+    if (c.windows && c.windows.length) return c.windows;
+    if (c.crops) return [Object.assign({ id: "crop-statistics" }, c.crops)]; // legacy fallback
+    return [];
   }
 
-  function renderTabPanel(tab, panelContainer) {
-    panelContainer.innerHTML = "";
-    if (!tab) {
-       panelContainer.innerHTML = '<p class="tab-note">No statistics recorded yet.</p>';
-       return;
-    }
-    if (tab.note) panelContainer.appendChild(el("p", "tab-note", esc(tab.note)));
+  function renderWindows(c) {
+    var host = $("windowsHost");
+    host.innerHTML = "";
+    getWindows(c).forEach(function (win) { host.appendChild(buildWindow(c, win)); });
+  }
 
+  function buildWindow(c, win) {
+    var section = el("section", "panel window");
+    var head = el("div", "panel-head",
+      '<h3>' + esc(win.heading || "") + '</h3>' +
+      (win.sub ? '<p class="panel-sub">' + esc(win.sub) + '</p>' : ''));
+    section.appendChild(head);
+
+    var tabs = win.tabs || [];
+    var row = el("div", "tab-row");
+    row.setAttribute("role", "tablist");
+    row.setAttribute("aria-label", (win.heading || "") + " tabs");
+    var panel = el("div", "tab-panel-body");
+    panel.setAttribute("role", "tabpanel");
+
+    if (!tabs.length) {
+      panel.innerHTML = '<p class="tab-note">Nothing recorded here yet.</p>';
+      section.appendChild(row); section.appendChild(panel); return section;
+    }
+    var active = activeTabByWindow[win.id];
+    if (!active || !tabs.some(function (t) { return t.id === active; })) active = tabs[0].id;
+    activeTabByWindow[win.id] = active;
+
+    function draw() {
+      row.innerHTML = "";
+      tabs.forEach(function (t) {
+        var b = el("button", "tab-btn" + (t.id === activeTabByWindow[win.id] ? " active" : ""), esc(t.label));
+        b.setAttribute("role", "tab");
+        b.setAttribute("aria-selected", t.id === activeTabByWindow[win.id] ? "true" : "false");
+        b.addEventListener("click", function () { activeTabByWindow[win.id] = t.id; draw(); });
+        row.appendChild(b);
+      });
+      renderTabPanel(panel, tabs.filter(function (t) { return t.id === activeTabByWindow[win.id]; })[0]);
+    }
+    draw();
+    section.appendChild(row);
+    section.appendChild(panel);
+    return section;
+  }
+
+  function renderTabPanel(panel, tab) {
+    panel.innerHTML = "";
+    if (!tab) return;
+    if (tab.note) panel.appendChild(el("p", "tab-note", esc(tab.note)));
+
+    // support both new `blocks` and legacy charts/cards/badges
     var blocks = tab.blocks;
     if (!blocks) {
       blocks = [];
@@ -491,13 +494,14 @@
     }
 
     blocks.forEach(function (blk) {
-      if (blk.type === "chart") panelContainer.appendChild(buildChartCard(blk.chart || blk));
-      else if (blk.type === "card") panelContainer.appendChild(buildCard(blk.card || blk));
-      else if (blk.type === "badges") panelContainer.appendChild(buildBadges(blk));
+      if (blk.type === "chart") panel.appendChild(buildChartCard(blk.chart || blk));
+      else if (blk.type === "card") panel.appendChild(buildCard(blk.card || blk));
+      else if (blk.type === "badges") panel.appendChild(buildBadges(blk));
     });
 
-    growBars(panelContainer);
+    growBars(panel);
   }
+
   function renderInsights(c) {
     var rail = $("insightRail");
     rail.innerHTML = "";
@@ -533,7 +537,7 @@
     var c = countries.filter(function (x) { return x.code === code; })[0];
     if (!c) return;
     activeCode = code;
-    activeTabIds = {};
+    activeTabByWindow = {};
     $("activeRegion").textContent = c.region || "";
     $("activeName").textContent = c.name || "";
     $("activeSub").textContent = c.subtitle || "";
