@@ -101,11 +101,11 @@ window.DASHBOARD_DATA = {
       ],
 
       windows: [
-        {
-          id: "crops",
-          heading: "Crop statistics",
-          sub: "Production · import · export — hover any crop row for its major producing states; click any row, card or badge to open its source",
-          tabs: [
+       {
+        id: "crop-statistics",
+        heading: "Crop statistics",
+        sub: "Production · import · export — hover any crop row for its major producing states; click any row, card or badge to open its source",
+        tabs: [
 
           /* ---------------- PRODUCTION ---------------- */
           {
@@ -320,56 +320,167 @@ window.DASHBOARD_DATA = {
             ]
           }
         ]
-      },
-         {
-          id: "state_initiatives",
-          heading: "State initiatives",
-          sub: "Capacity building · programmes",
-          tabs: [
-            {
-              id: "capacity_building",
-              label: "Capacity building",
-              blocks: [
-                {
-                  type: "card",
-                  title: "Farm-level capacity building",
-                  text: "NMSA and NICRA build capacity at the farm well[cite: 2]. The National Mission for Sustainable Agriculture (NMSA) is the umbrella mission for climate-adaptive farming practices[cite: 2]. NICRA (National Innovations in Climate Resilient Agriculture) is an ICAR research network developing stress-tolerant varieties and practices[cite: 2]."
-                }
-              ]
-            },
-            {
-              id: "programmes",
-              label: "Programmes",
-              blocks: [
-                {
-                  type: "chart",
-                  title: "National Adaptation Fund for Climate Change (NAFCC)",
-                  unit: "count",
-                  bars: [
-                    { label: "Projects", value: 30, display: "30" },
-                    { label: "States & UTs", value: 27, display: "27" }
-                  ],
-                  footnote: "The NAFCC funded 30 projects worth $88 M across 27 States and UTs[cite: 2]. It was downgraded from a 'scheme' to a 'non-scheme' in November 2022[cite: 2]."
-                },
-                {
-                  type: "chart",
-                  title: "Organic value chain push",
-                  unit: "lakh farmers",
-                  bars: [
-                    { label: "PKVY (nationwide)", value: 25.30, display: "25.30" },
-                    { label: "MOVCDNER (North-East)", value: 2.19, display: "2.19" }
-                  ],
-                  footnote: "PKVY covers 52,289 clusters with $225 M released to Dec 2024, aiming to pitch India as an established exporter of organic produce[cite: 2]. MOVCDNER operates 434 Farmer Producer Companies specific to the North-East[cite: 2]."
-                },
-                {
-                  type: "card",
-                  title: "State-level development & agroforestry",
-                  text: "The Rashtriya Krishi Vikas Yojana (RKVY) funds state-level projects[cite: 2]. It includes the Sub-Mission on Agroforestry (SMAF), which has a $28 M indicative outlay (2021–26) promoting trees on farmland under the 'Har Medh Par Pedh' push[cite: 2]."
-                }
-              ]
-            }
-          ]
-        }
+       },
+
+       {
+        id: "state-initiatives",
+        heading: "State Initiatives",
+        sub: "Capacity building · programmes — the resilience apparatus described in the paper; click any chart, card or badge to open the document's cited source",
+        tabs: [
+
+          /* ---------------- CAPACITY BUILDING ---------------- */
+          {
+            id: "capacity-building",
+            label: "Capacity Building",
+            note: "From §1.2 of the paper — the research, assessment and extension machinery behind sustainable-agriculture policy, led by NMSA and its technical arm NICRA.",
+            blocks: [
+              {
+                type: "card",
+                title: "NMSA — the mission framework",
+                text: "The National Mission for Sustainable Agriculture is one of the nine missions of the National Action Plan on Climate Change, pursuing ten dimensions of agriculture from water-use efficiency to credit and market access. States and UTs are encouraged to draw up their own State Action Plans on Climate Change (SAPCCs).",
+                source: { label: "MoA&FW — National Mission for Sustainable Agriculture", url: "https://nmsa.dac.gov.in/" }
+              },
+              {
+                type: "chart",
+                title: "NICRA district climate-risk assessment",
+                unit: "districts",
+                bars: [
+                  { label: "Districts assessed", value: 651, display: "651",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" },
+                  { label: "Found vulnerable", value: 310, display: "310",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" },
+                  { label: "'Highly' vulnerable", value: 201, display: "201",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" },
+                  { label: "'Very high' vulnerability", value: 109, display: "109",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" }
+                ],
+                footnote: "Assessment follows IPCC protocols; District Agriculture Contingency Plans have been prepared for all 651 districts, recommending location-specific climate-resilient crops and practices.",
+                sources: [
+                  { label: "PIB — NICRA maps climate risk in 651 districts; 310 found vulnerable (Mar 2026)",
+                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" }
+                ]
+              },
+              {
+                type: "chart",
+                title: "ICAR research pipeline, 2014–2024",
+                unit: "new crop varieties released",
+                bars: [
+                  { label: "New varieties released", value: 2900, display: "≈2,900",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" },
+                  { label: "…tolerant to biotic/abiotic stress", value: 2600, display: "2,600+",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" }
+                ],
+                footnote: "The research pipeline feeding the Climate Resilient Villages: ICAR released roughly 2,900 varieties over the decade, of which over 2,600 tolerate one or more stresses.",
+                sources: [
+                  { label: "PIB — NICRA project / climate-risk mapping",
+                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2244628" }
+                ]
+              },
+              {
+                type: "card",
+                title: "Climate Resilient Villages (CRVs)",
+                text: "Location-specific climate-resilient technologies have been demonstrated in 448 CRVs across 151 climatically vulnerable districts, covering 28 States and UTs — the on-ground layer through which NICRA's research reaches farmers.",
+                source: { label: "PIB — NICRA project (Feb 2025)", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2101836" }
+              },
+              {
+                type: "chart",
+                title: "Agro-climatic granularity (NARP)",
+                unit: "agro-climatic zones mapped",
+                bars: [
+                  { label: "ICAR NARP zones", value: 128, display: "128",
+                    sourceUrl: "https://icar.org.in/sites/default/files/2022-06/ICAR-Global-Reach_21.08.2020.pdf" },
+                  { label: "Earlier (Planning Commission)", value: 15, display: "15",
+                    sourceUrl: "https://icar.org.in/sites/default/files/2022-06/ICAR-Global-Reach_21.08.2020.pdf" }
+                ],
+                footnote: "ICAR's two-phase National Agricultural Research Project raised granularity from 15 zones to 128, enabling localised policy treatment over one-size-fits-all design.",
+                sources: [
+                  { label: "ICAR — DARE-ICAR Global Reach (agro-climatic zones)",
+                    url: "https://icar.org.in/sites/default/files/2022-06/ICAR-Global-Reach_21.08.2020.pdf" }
+                ]
+              },
+              {
+                type: "card",
+                title: "CCSAMMN — the two-way information bridge",
+                text: "Climate Change and Sustainable Agriculture: Monitoring, Modeling and Networking runs a bidirectional channel between farmers and policymakers, engaging State Agricultural Universities, Krishi Vigyan Kendras (KVKs) and ICAR institutes to ground interventions in on-farm experience.",
+                source: { label: "PIB — NICRA project (Feb 2025)", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2101836" }
+              }
+            ]
+          },
+
+          /* ---------------- PROGRAMMES ---------------- */
+          {
+            id: "programmes",
+            label: "Programmes",
+            note: "From §1.3 of the paper — the schemes that carry the policy, with outlays in USD million (₹96.5 = US$1). Most now formally live as components of the RKVY and Krishonnati Yojana umbrellas.",
+            blocks: [
+              {
+                type: "chart",
+                title: "Programme outlays in the document",
+                unit: "USD million",
+                bars: [
+                  { label: "PMKSY umbrella (2021–26)", value: 9644, display: "9,644",
+                    sourceUrl: "https://www.drishtiias.com/daily-updates/daily-news-analysis/pradhan-mantri-krishi-sinchayee-yojana-2" },
+                  { label: "PDMC released (2015–24)", value: 2277, display: "2,277",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2097882" },
+                  { label: "NMNF (to 2025–26)", value: 257, display: "257",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2077094" },
+                  { label: "PKVY releases (to Dec 2024)", value: 225, display: "225",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2175205&reg=48&lang=2" },
+                  { label: "RAD (since inception)", value: 193, display: "193",
+                    sourceUrl: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2097882" },
+                  { label: "National Bamboo Mission (2018)", value: 134, display: "134",
+                    sourceUrl: "https://www.indianemployees.com/cabinet-decision/details/cabinet-approves-restructured-national-bamboo-mission" },
+                  { label: "SMAF agroforestry (2021–26)", value: 28, display: "28",
+                    sourceUrl: "https://nmsa.dac.gov.in/pdfdoc/Agroforestory_Guidelines_new_English.pdf" }
+                ],
+                footnote: "PMKSY is an umbrella outlay (₹93,068 cr); the others are scheme-specific. A ₹5,000 cr Micro Irrigation Fund ($518 M) via NABARD tops up state subsidies — $488 M approved, $377 M disbursed by end-2024.",
+                sources: [
+                  { label: "PIB — Economic Survey 2024–25 (PDMC, RAD releases)",
+                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2097882" },
+                  { label: "Drishti IAS — PMKSY consolidated note (umbrella outlay)",
+                    url: "https://www.drishtiias.com/daily-updates/daily-news-analysis/pradhan-mantri-krishi-sinchayee-yojana-2" },
+                  { label: "PIB — Launch of National Mission on Natural Farming",
+                    url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2077094" }
+                ]
+              },
+              {
+                type: "chart",
+                title: "Micro-irrigation (PDMC) coverage",
+                unit: "lakh hectares",
+                bars: [
+                  { label: "Covered since 2015–16", value: 109, display: "≈109",
+                    sourceUrl: "https://www.tribuneindia.com/news/agriculture-targets/govt-sets-target-to-bring-additional-100-lakh-hectares-under-micro-irrigation-during-2025-30" },
+                  { label: "Further target, 2025–30", value: 100, display: "100",
+                    sourceUrl: "https://www.tribuneindia.com/news/agriculture-targets/govt-sets-target-to-bring-additional-100-lakh-hectares-under-micro-irrigation-during-2025-30" }
+                ],
+                footnote: "95.58 lakh ha were brought under micro-irrigation between 2015–16 and Dec 2024 (PDMC released $2,277 M); coverage is still under 8% of net sown area, hence the further 100 lakh ha target.",
+                sources: [
+                  { label: "The Tribune / ANI — additional 100 lakh ha under micro-irrigation, 2025–30",
+                    url: "https://www.tribuneindia.com/news/agriculture-targets/govt-sets-target-to-bring-additional-100-lakh-hectares-under-micro-irrigation-during-2025-30" }
+                ]
+              },
+              {
+                type: "card",
+                title: "Soil Health Card",
+                text: "Over 24.60 crore cards issued since February 2015, each reporting twelve soil parameters spanning macro- and micronutrients, pH, electrical conductivity and organic carbon. Since 2022–23 it runs as the 'Soil Health & Fertility' component of the RKVY.",
+                source: { label: "PIB — Celebrating a decade of Soil Health Cards (Feb 2025)", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2104403" }
+              },
+              {
+                type: "card",
+                title: "National Mission on Natural Farming (NMNF)",
+                text: "Carved out of the organic-farming stable in November 2024 with a $257 M outlay ($164 M central) to 2025–26 — targeting 15,000 clusters, one crore farmers and 7.5 lakh ha, serviced by 10,000 Bio-input Resource Centres. Enrolment crossed ten lakh farmers by mid-2025, aided by a $41-per-acre-per-year incentive for two years.",
+                source: { label: "PIB — Launch of National Mission on Natural Farming (Nov 2024)", url: "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2077094" }
+              },
+              {
+                type: "card",
+                title: "RKVY & Krishonnati Yojana — the two umbrellas",
+                text: "From 2022–23 the Government merged most centrally sponsored schemes into two umbrellas: the Rashtriya Krishi Vikas Yojana, run 'cafeteria'-style so states pick components, and the Krishonnati Yojana. Soil health, rainfed area development, agroforestry and PDMC now formally live as RKVY components.",
+                source: { label: "PRS Legislative Research — Demand for Grants 2026–27, Agriculture", url: "https://prsindia.org/budgets/parliament/demand-for-grants-2026-27-analysis-agriculture-and-farmers-welfare" }
+              }
+            ]
+          }
+        ]
+       }
       ],
 
       insights: [
